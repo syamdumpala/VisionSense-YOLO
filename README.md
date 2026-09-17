@@ -1,44 +1,36 @@
-# YOLO Object Detection Project
+# VisionSense YOLO
 
-A production-style computer vision project built around Ultralytics YOLO for object detection using a sample street-scene image. The project is structured so it can be pushed to GitHub later and expanded into a more complete ML pipeline.
+<p align="center">
+  <img src="https://github.com/syamdumpala/VisionSense-YOLO/actions/workflows/ci.yml/badge.svg" alt="CI status" />
+  <img src="https://img.shields.io/badge/Python-3.10%2B-3776AB?logo=python&logoColor=white" alt="Python 3.10+" />
+  <img src="https://img.shields.io/badge/YOLO-Ultralytics-00D3FF?logo=yolo&logoColor=white" alt="YOLO Ultralytics" />
+  <img src="https://img.shields.io/badge/Status-Active-brightgreen" alt="Status Active" />
+</p>
+
+VisionSense YOLO is an end-to-end computer vision project built with Ultralytics YOLO for object detection in images and multi-image inputs. It detects common objects, saves annotated outputs, and generates structured detection summaries that can be used in ML workflows, dashboards, or portfolio projects.
 
 ## Overview
 
-This project demonstrates an end-to-end object detection workflow:
+This project demonstrates a production-style object detection pipeline:
 
-- loading a YOLO model
-- running inference on an image
-- generating detection output
-- saving visualization and metadata
-- exposing a simple command-line interface for re-use
+- load a YOLO model
+- run inference on an image or folder of images
+- filter results using a confidence threshold
+- save detection outputs and metadata
+- export a JSON summary for downstream analysis
+- expose a simple CLI for easy experimentation
 
-The sample model and image included in this workspace are ready to run immediately, making this a good starting point for a portfolio-ready ML project.
+It is designed for both learning and portfolio use, with a GitHub-ready structure and a clear workflow for future enhancements.
 
-## Why this project
+## Features
 
-This repository is designed to be:
-
-- easy to run locally
-- easy to extend for more images or videos
-- cleanly structured for GitHub hosting
-- suitable as a base for a future portfolio or deployment project
-
-## Project structure
-
-```text
-YOLO-object-detection/
-├── README.md
-├── requirements.txt
-├── .gitignore
-├── main.py
-├── src/
-│   ├── __init__.py
-│   └── detector.py
-├── bus.jpg
-├── yolo11n.pt
-└── outputs/
-    └── detection_run/
-```
+- YOLOv11 nano object detection
+- image and folder-based inference support
+- adjustable confidence threshold
+- output directory management
+- JSON summary export with class counts
+- CPU/GPU-friendly device configuration
+- clean Python package structure for scaling up
 
 ## Tech stack
 
@@ -46,89 +38,124 @@ YOLO-object-detection/
 - Ultralytics YOLO
 - OpenCV
 - NumPy
+- GitHub Actions for CI
+
+## Project structure
+
+```text
+VisionSense-YOLO/
+├── .github/
+│   └── workflows/
+│       └── ci.yml
+├── README.md
+├── requirements.txt
+├── .gitignore
+├── main.py
+├── bus.jpg
+├── yolo11n.pt
+├── src/
+│   ├── __init__.py
+│   └── detector.py
+├── tests/
+│   └── test_detector.py
+└── outputs/
+    └── detection_run/
+```
 
 ## Quick start
 
-### 1) Create or activate your Python environment
+### 1) Clone the repository
 
-If you are using the local environment already available in this workspace:
+```bash
+git clone https://github.com/syamdumpala/VisionSense-YOLO.git
+cd VisionSense-YOLO
+```
+
+### 2) Set up the environment
+
+Using the provided local environment:
 
 ```powershell
 cd d:\yolo_tutorial
 .\YOLO_tutorial\Scripts\python.exe -m pip install -r requirements.txt
 ```
 
-If you prefer your own virtual environment:
+Or create your own virtual environment:
 
-```powershell
-cd d:\yolo_tutorial
+```bash
 python -m venv .venv
-.\.venv\Scripts\Activate.ps1
-python -m pip install -r requirements.txt
+source .venv/bin/activate
+pip install -r requirements.txt
 ```
 
-### 2) Run the detector
+### 3) Run the detector
 
 ```powershell
 cd d:\yolo_tutorial
-.\YOLO_tutorial\Scripts\python.exe main.py --source bus.jpg --output-dir outputs
+.\YOLO_tutorial\Scripts\python.exe main.py --source bus.jpg --output-dir outputs --conf 0.25
 ```
 
-Or with a custom threshold:
+### 4) Run on a folder of images
 
 ```powershell
-.\YOLO_tutorial\Scripts\python.exe main.py --source bus.jpg --conf 0.35 --output-dir outputs
+.\YOLO_tutorial\Scripts\python.exe main.py --source data/images --output-dir outputs --conf 0.3
 ```
 
 ## Example output
 
-The script will generate:
+The script generates:
 
-- a detected image in the output folder
-- a `summary.json` file with the detected labels and confidence values
-- a clean CLI summary in the terminal
+- a labeled detection image in the run folder
+- a summary JSON file with each detected label and confidence
+- a terminal log showing the detected objects and total counts
 
 Example console output:
 
 ```text
 Detection completed. Results saved to: outputs\detection_run
-- person (0.89)
-- bus (0.96)
+- bus (0.94)
+- person (0.888)
+- person (0.878)
+Total detections: 5
 Summary JSON: outputs\summary.json
 ```
 
-## Customization
-
-You can easily change:
-
-- input image or video path
-- detection confidence threshold
-- output directory
-- model weights file
-- target device (`cpu` or `cuda`)
-
-Examples:
+## Configuration options
 
 ```powershell
-.\YOLO_tutorial\Scripts\python.exe main.py --source my_image.jpg --weights my_model.pt --conf 0.4 --device cpu
+.\YOLO_tutorial\Scripts\python.exe main.py --source bus.jpg --weights yolo11n.pt --conf 0.35 --device cpu --imgsz 640 --output-dir outputs
 ```
 
-## GitHub repository
+Available options:
 
-When you are ready to push this project to GitHub, add your repository URL here:
+- `--source`: image, folder, or video path
+- `--weights`: custom YOLO weights file
+- `--conf`: detection threshold
+- `--device`: `cpu` or `cuda`
+- `--imgsz`: inference image size
+- `--output-dir`: output directory name
+- `--run-name`: output subfolder name
 
-```text
-https://github.com/your-username/your-repository.git
-```
+## CI and quality checks
+
+This project includes a GitHub Actions workflow to run automated checks on every push and pull request. The badge at the top of this README reflects the status of that workflow.
 
 ## Roadmap
 
-- add support for video input
-- add batch inference over a folder
-- create a web dashboard or Flask API
-- add model benchmarking and metrics
-- add CI/CD and automated checks
+- add video-based detection support with frame export
+- support batch inference from a dataset folder
+- integrate a small Flask API or web dashboard
+- add benchmarking and evaluation metrics
+- improve packaging and deployment for real-world usage
 
 ## License
 
-This project is intended for learning and experimentation. Add your preferred license later if you plan to publish it publicly.
+This project is intended for learning, experimentation, and portfolio use. Add an appropriate open-source license if you plan to publish it publicly.
+
+## Repository
+
+- GitHub: https://github.com/syamdumpala/VisionSense-YOLO
+
+## Author
+
+Syam D. P. | Computer Vision & AI project

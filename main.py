@@ -6,13 +6,13 @@ from src.detector import DetectorConfig, YOLODetector
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(
-        description="Run YOLO object detection on an image and save labeled output."
+        description="Run YOLO object detection on an image, folder, or video and save labeled output."
     )
     parser.add_argument(
         "--source",
         type=str,
         default="bus.jpg",
-        help="Path to the input image or video file.",
+        help="Path to the input image, folder of images, or video file.",
     )
     parser.add_argument(
         "--weights",
@@ -31,6 +31,12 @@ def parse_args() -> argparse.Namespace:
         type=str,
         default="outputs",
         help="Directory where detection outputs are saved.",
+    )
+    parser.add_argument(
+        "--run-name",
+        type=str,
+        default="detection_run",
+        help="Folder name used for the current inference output.",
     )
     parser.add_argument(
         "--device",
@@ -57,6 +63,7 @@ if __name__ == "__main__":
         device=args.device,
         imgsz=args.imgsz,
         output_dir=args.output_dir,
+        run_name=args.run_name,
     )
 
     detector = YOLODetector(config)
@@ -69,5 +76,6 @@ if __name__ == "__main__":
     else:
         print("- No objects were detected above the confidence threshold.")
 
+    print(f"Total detections: {summary['total_detections']}")
     summary_path = Path(config.output_dir) / "summary.json"
     print(f"Summary JSON: {summary_path}")
