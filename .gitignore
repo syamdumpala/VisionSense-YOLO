@@ -1,0 +1,15 @@
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+YOLO_tutorial/
+*.egg-info/
+.idea/
+.vscode/
+outputs/
+runs/
+results_demo/
+.DS_Store
+*.pt
+.ipynb_checkpoints/
+.kilo/
