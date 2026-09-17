@@ -101,6 +101,12 @@ cd d:\yolo_tutorial
 .\YOLO_tutorial\Scripts\python.exe main.py --source data/images --output-dir outputs --conf 0.3
 ```
 
+### 5) Run the tests
+
+```powershell
+.\YOLO_tutorial\Scripts\python.exe -m pytest
+```
+
 ## Example output
 
 The script generates:
